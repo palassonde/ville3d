@@ -14,7 +14,90 @@
     <div id="canvas"></div>
 	<script src="js/load.js"></script>
 	
+	<script type="text/javascript">
+		function checkValue(value, element){
+			
+			if(value < 0){
+				document.getElementById(element).value = 0;
+				return;
+			}
+			
+			var x = document.getElementById("dimX").value;
+			var z = document.getElementById("dimZ").value;
+
+			var somme = 0;
+			if(element == 'commercial'){
+				somme += parseInt(document.getElementById("residentiel").value);
+				somme += parseInt(document.getElementById("site").value);
+			}else if(element == 'residentiel'){
+				somme += parseInt(document.getElementById("commercial").value);
+				somme += parseInt(document.getElementById("site").value);
+			}else{
+				somme += parseInt(document.getElementById("residentiel").value);
+				somme += parseInt(document.getElementById("commercial").value);
+			}
+
+			var totalEspace = ((x*3)*2) * ((z*3)*2);
+			
+			var dif = totalEspace - (somme); 
+			
+			if(dif < value){
+				document.getElementById(element).value = dif;
+			}
+			
+		}
+		
+		function checkDim (value, element){
+		
+			if(value < 1){
+				document.getElementById(element).value = 1;
+			}
+		
+		}
+		
+		function reset(){
+			document.getElementById("dimX").value = 1;
+			document.getElementById("dimZ").value = 1;
+			document.getElementById("residentiel").value = 10;
+			document.getElementById("site").value = 10;
+			document.getElementById("commercial").value = 10;
+			main.createVille();
+		}
+
+	</script>
 	
+	<div id="formulaire" action="">
+		<fieldset>
+		<legend> Modifier paramètres : </legend>
+			
+		<label for="dimX">Dimension en X :</label>
+		<input type="number" id="dimX" value="1" min="1" onchange="checkDim(this.value,'dimX');">
+			
+		<br/>
+			
+		<label for="dimZ">Dimension en Z :</label>
+		<input type="number" id="dimZ" value="1" min="1" onchange="checkDim(this.value,'dimZ');">
+		<br/>
+		
+		<hr/>
+			
+		<label for="commercial">Nombre d'Immeuble commercial :</label>
+		<input type="number" id="commercial" step="1" value="10" min="0" onchange="checkValue(this.value,'commercial');">
+		<br/>
+			
+		<label for="residentiel">Nombre d'Immeuble résidentiel :</label>
+		<input type="number" id="residentiel" step="1" value="10" min="0" onchange="checkValue(this.value,'residentiel')">
+		<br/>
+			
+		<label for="site">Nombre de sites publics :</label>
+		<input type="number" id="site" step="1" value="10" min="0" onchange="checkValue(this.value,'site')">
+		<br/>
+			 
+		</fieldset>
+		<input type="reset" onclick="reset()" value="RESET"/>
+		<button onclick="main.createVille()">SOUMETTRE</button>
+	</div>
+
 	
   </body>
 </html>

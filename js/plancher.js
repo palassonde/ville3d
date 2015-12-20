@@ -14,9 +14,9 @@ Plancher = function (dimX, dimZ, sizeX, sizeZ, scene){
 	//Chaque ligne a 8 espace libre sur 11
 	//on obtient 8 -> 4 puisque chaque batiment prend 2x2
 	var totalEspace = ((dimX*3)*2) * ((dimZ*3)*2)
-	this.commercial = 5;
-	this.residentiel = 13;
-	this.site = 0;
+	this.commercial = parseInt(document.getElementById("commercial").value);
+	this.residentiel = parseInt(document.getElementById("residentiel").value);
+	this.site = parseInt(document.getElementById("site").value);
 	this.rien = totalEspace - (this.commercial + this.residentiel + this.site);
 }
 

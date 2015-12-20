@@ -6,8 +6,8 @@ Ville = function (tabGeo){
 	this.tabGeo = tabGeo;
 	
 	//Grosseur du terrain
-	this.dimX = 1;
-	this.dimZ = 1;
+	this.dimX = parseInt(document.getElementById("dimX").value);
+	this.dimZ = parseInt(document.getElementById("dimZ").value);
 	
 	//Grosseur de chaque cellule
 	this.celluleX = 2;
@@ -21,6 +21,7 @@ Ville.prototype.initialize = function (){
     canvasWidth = 800;
     canvasHeight = 600;
     renderer.setSize(canvasWidth, canvasHeight);
+	document.getElementById("canvas").innerHTML = "";
     document.getElementById("canvas").appendChild(renderer.domElement);
 	
 	// Initialisation de la scène et de la caméra
