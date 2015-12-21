@@ -4,4 +4,4 @@ Generation procedural d'une ville
 
 ## Partir le serveur
 
-$ python -m simpleHTTPserver 8080
+$ python -m SimpleHTTPServer 8080
