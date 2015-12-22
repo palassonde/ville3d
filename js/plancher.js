@@ -1,3 +1,6 @@
+
+//Créer un planché cellule par cellule, on ajoute le gazon / batiment
+//aux endroits appropriés
 Plancher = function (dimX, dimZ, sizeX, sizeZ, scene){
 	this.dimX = (dimX * 12) + 1;
 	this.dimZ = (dimZ * 12) + 1;
@@ -42,16 +45,13 @@ Plancher.prototype.createVille = function (tabGeo){
 					
 			//Route intersection
 			if(isStreerX && isStreerZ){
-				var material = new THREE.MeshBasicMaterial({color: 0xFF0000});
-				this.createStreet(tabGeo,xTmp,zTmp, material);
+				this.createStreetNormal(tabGeo,xTmp,zTmp);
 			//Route horizontale
 			}else if(isStreerX){
-				var material = new THREE.MeshBasicMaterial({color: 0x0000FF});
-				this.createStreet(tabGeo,xTmp,zTmp, material);
+				this.createStreet(tabGeo,xTmp,zTmp, 0);
 			//Route verticale
 			}else if(isStreerZ){
-				var material = new THREE.MeshBasicMaterial({color: 0x555555});
-				this.createStreet(tabGeo,xTmp,zTmp, material);
+				this.createStreet(tabGeo,xTmp,zTmp, Math.PI/2);
 			}else{
 						
 				if(isImpaire){
@@ -112,8 +112,8 @@ Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp){
 
 Plancher.prototype.createCommercial = function (tabGeo, xTmp, zTmp){
 	
-	var material = new THREE.MeshBasicMaterial({color: 0xF300EB});
-	var object = new THREE.Mesh(tabGeo[1],material);
+	//var material = new THREE.MeshBasicMaterial({color: 0xF300EB});
+	var object = new THREE.Mesh(tabGeo[1].geometrie);//,material);
 	object.position.x = xTmp;
 	object.position.z = zTmp;
 	//object.position.y = 5;
@@ -122,7 +122,7 @@ Plancher.prototype.createCommercial = function (tabGeo, xTmp, zTmp){
 Plancher.prototype.createHome = function (tabGeo, xTmp, zTmp){
 	
 	var material = new THREE.MeshBasicMaterial({color: 0xFFE600});
-	var object = new THREE.Mesh(tabGeo[1],material);
+	var object = new THREE.Mesh(tabGeo[1].geometrie,material);
 	object.position.x = xTmp;
 	object.position.z = zTmp;
 	//object.position.y = 5;
@@ -131,15 +131,25 @@ Plancher.prototype.createHome = function (tabGeo, xTmp, zTmp){
 Plancher.prototype.createSite = function (tabGeo, xTmp, zTmp){
 	
 	var material = new THREE.MeshBasicMaterial({color: 0xFFD7FF});
-	var object = new THREE.Mesh(tabGeo[1],material);
+	
+	var object = new THREE.Mesh(tabGeo[1].geometrie,material);
 	object.position.x = xTmp;
 	object.position.z = zTmp;
 	//object.position.y = 5;
 	this.scene.add(object);
 }
 
-Plancher.prototype.createStreet = function (tabGeo, xTmp, zTmp, material){
-	var object = new THREE.Mesh(tabGeo[0],material);
+Plancher.prototype.createStreet = function (tabGeo, xTmp, zTmp, rotation){
+	var object = new THREE.Mesh(tabGeo[2].geometrie,tabGeo[2].material);
+	object.position.x = xTmp;
+	object.position.z = zTmp;
+	object.rotation.y = rotation;
+	//object.position.y = 5;
+	this.scene.add(object);
+}
+
+Plancher.prototype.createStreetNormal = function (tabGeo, xTmp, zTmp){
+	var object = new THREE.Mesh(tabGeo[3].geometrie,tabGeo[3].material);
 	object.position.x = xTmp;
 	object.position.z = zTmp;
 	//object.position.y = 5;
@@ -147,11 +157,12 @@ Plancher.prototype.createStreet = function (tabGeo, xTmp, zTmp, material){
 }
 
 Plancher.prototype.createSimpleCellule = function (tabGeo, xTmp, zTmp){
-		
 	//Ajouter un cellule
-	var material = new THREE.MeshBasicMaterial({color: 0x00FF00});
+	var texture = tabGeo[0].material;
+	
+	var material = new THREE.MeshBasicMaterial(texture);
 				
-	var object = new THREE.Mesh(tabGeo[0],material);
+	var object = new THREE.Mesh(tabGeo[0].geometrie,tabGeo[0].material);
 	object.position.x = xTmp;
 	object.position.z = zTmp;
 	this.scene.add(object);

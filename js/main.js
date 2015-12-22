@@ -1,3 +1,5 @@
+
+//Créer un main qui gère la ville
 Main = function(tabGeo){
 	this.tabGeo = tabGeo;
 	this.createVille();

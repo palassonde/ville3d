@@ -1,3 +1,6 @@
+//Créer un ville qui fait appel a "plancher"
+//pour ajouter les element
+//Camera et lumière est géré ici
 Ville = function (tabGeo){
 	this.scene; //Scene de la ville
 	this.camera; //Camera de la ville
@@ -17,7 +20,7 @@ Ville = function (tabGeo){
 Ville.prototype.initialize = function (){
 	// Initialisation du canvas
     renderer = new THREE.WebGLRenderer({antialias: true});
-    renderer.setClearColor(0x000000, 1);
+    renderer.setClearColor(0x77DDFF, 1);
     canvasWidth = 800;
     canvasHeight = 600;
     renderer.setSize(canvasWidth, canvasHeight);
@@ -26,17 +29,29 @@ Ville.prototype.initialize = function (){
 	
 	// Initialisation de la scène et de la caméra
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(45, canvasWidth / canvasHeight, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(45, canvasWidth / canvasHeight, 0.1, 100);
     this.camera.position.set(0, this.distance / 2, this.distance);
-    this.camera.lookAt(this.scene.position);
+	this.camera.lookAt(this.scene.position);
+    
+	//Initialise a 0,0
+	// this.camera.position.set(0,1,0);
+	// this.camera.rotation.y = 3.5;
+	
+	
+    //this.camera.lookAt(this.scene.position);
     this.scene.add(this.camera);
 	
 	// De la lumière
-    var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight.position.set(0, 100, 0);
-    this.scene.add(directionalLight);
-    var ambientLight = new THREE.AmbientLight(0xF0F0F0);
-    this.scene.add(ambientLight);
+	var light = new THREE.PointLight( 0xffffff, 1.0);
+	light.position.set( 0,100,0);
+	this.scene.add( light );
+	
+	
+    // var directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    // directionalLight.position.set(0, 10, 0);
+    // this.scene.add(directionalLight);
+    //var ambientLight = new THREE.AmbientLight(0xF0F0F0);
+    //this.scene.add(ambientLight);
 	
 	//Créer le plancher
 	this.plancher = new Plancher(this.dimX,this.dimZ,2,2,this.scene);
