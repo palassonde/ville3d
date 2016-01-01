@@ -11,6 +11,8 @@ Plancher = function (dimX, dimZ, sizeX, sizeZ, scene){
 	this.jumpX = 4;
 	this.jumpZ = 4;
 	
+	this.anime = [];
+	
 	this.tabCellule = new Array(); //Contient les position de chacun des cellules
 	
 	
@@ -57,7 +59,11 @@ Plancher.prototype.createVille = function (tabGeo){
 				if(isImpaire){
 					//console.log("a");
 					//Ajouter un batiment (gazon)
-					this.createBuilding(tabGeo,xTmp,zTmp);
+					console.log(modZ);
+					
+					var isRotate = modX != 3;
+					
+					this.createBuilding(tabGeo,xTmp,zTmp,isRotate);
 				}
 		
 				//Ajouter un cellule (gazon)
@@ -68,7 +74,7 @@ Plancher.prototype.createVille = function (tabGeo){
 	}
 }
 
-Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp){
+Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp, isRotate){
 	//Variable pour le choix de cellule
 	var type = 0; //0 = rien, 1 = commercial, 2 = residentiel, 3 = site 
 	var tabTmp = new Array();
@@ -96,7 +102,7 @@ Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp){
 						
 	switch(type){
 		case 1: this.commercial--;
-				this.createCommercial(tabGeo,xTmp,zTmp);
+				this.createCommercial(tabGeo,xTmp,zTmp, isRotate);
 			break;
 		case 2:	this.residentiel--;
 				this.createHome(tabGeo,xTmp,zTmp);
@@ -110,33 +116,100 @@ Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp){
 	}
 }
 
-Plancher.prototype.createCommercial = function (tabGeo, xTmp, zTmp){
+Plancher.prototype.createCommercial = function (tabGeo, xTmp, zTmp, isRotate){
 	
-	//var material = new THREE.MeshBasicMaterial({color: 0xF300EB});
-	var object = new THREE.Mesh(tabGeo[1].geometrie);//,material);
+	var random = Math.random();
+	
+	if(random < 0.5){ //Marche
+		var object = new THREE.Mesh(tabGeo[6].geometrie,tabGeo[6].material);
+	}else{ //Tour d'etage
+		var object = new THREE.Mesh(tabGeo[7].geometrie,tabGeo[7].material);
+	}
 	object.position.x = xTmp;
 	object.position.z = zTmp;
-	//object.position.y = 5;
+	
+	if(isRotate){
+		object.rotation.y = Math.PI;
+	}
+	
+	
 	this.scene.add(object);
 }
 Plancher.prototype.createHome = function (tabGeo, xTmp, zTmp){
 	
-	var material = new THREE.MeshBasicMaterial({color: 0xFFE600});
-	var object = new THREE.Mesh(tabGeo[1].geometrie,material);
+	var random = Math.random();
+	
+	if(random < 0.33){ //appartement	
+		var object = new THREE.SkinnedMesh(tabGeo[1].geometrie, tabGeo[1].material);
+	}else if(random < 0.66){ //Moderne
+		var object = new THREE.SkinnedMesh(tabGeo[4].geometrie, tabGeo[4].material);
+	}else{ //Normal
+		var object = new THREE.Mesh(tabGeo[5].geometrie,tabGeo[5].material);
+	}
 	object.position.x = xTmp;
 	object.position.z = zTmp;
-	//object.position.y = 5;
 	this.scene.add(object);
+	
 }
+
 Plancher.prototype.createSite = function (tabGeo, xTmp, zTmp){
 	
-	var material = new THREE.MeshBasicMaterial({color: 0xFFD7FF});
+	//Rond
+	var object = new THREE.SkinnedMesh(tabGeo[11].geometrie, tabGeo[11].material);
+
+	var material = object.material.materials;
+
+    for (var i = 0; i < material.length; i++) {
+		var mat = material[i];
+		mat.skinning = true;
+	}
 	
-	var object = new THREE.Mesh(tabGeo[1].geometrie,material);
 	object.position.x = xTmp;
 	object.position.z = zTmp;
-	//object.position.y = 5;
+	object.position.y = -0.2;
+	
 	this.scene.add(object);
+	
+	var animation = new THREE.AnimationAction(object.geometry.animations[0]);
+	var mixer = new THREE.AnimationMixer(object);
+	mixer.addAction(animation);
+	this.anime.push(mixer);
+	
+	//Tige
+	var object3 = new THREE.Mesh(tabGeo[8].geometrie,tabGeo[8].material);
+	object3.position.x = xTmp;
+	object3.position.z = zTmp;
+	object3.position.y = -0.2;
+	this.scene.add(object3);
+	
+	
+	
+	
+	//banlacoir	
+	var object2 = new THREE.SkinnedMesh(tabGeo[10].geometrie, tabGeo[10].material);//,tabGeo[4].material);
+	
+    var material2 = object2.material.materials;
+
+	for (var i = 0; i < material2.length; i++) {
+		var mat = material2[i];
+		mat.skinning = true;
+    }
+	
+	object2.position.x = xTmp;
+	object2.position.z = zTmp;
+	this.scene.add(object2);
+	
+	var animation2 = new THREE.AnimationAction(object2.geometry.animations[0]);
+	var mixer2 = new THREE.AnimationMixer(object2);
+	mixer2.addAction(animation2);
+	this.anime.push(mixer2);
+	
+	//Module
+	var object4 = new THREE.Mesh(tabGeo[9].geometrie,tabGeo[9].material);
+	object4.position.x = xTmp;
+	object4.position.z = zTmp;
+	this.scene.add(object4);
+	
 }
 
 Plancher.prototype.createStreet = function (tabGeo, xTmp, zTmp, rotation){
@@ -144,7 +217,6 @@ Plancher.prototype.createStreet = function (tabGeo, xTmp, zTmp, rotation){
 	object.position.x = xTmp;
 	object.position.z = zTmp;
 	object.rotation.y = rotation;
-	//object.position.y = 5;
 	this.scene.add(object);
 }
 
@@ -152,7 +224,6 @@ Plancher.prototype.createStreetNormal = function (tabGeo, xTmp, zTmp){
 	var object = new THREE.Mesh(tabGeo[3].geometrie,tabGeo[3].material);
 	object.position.x = xTmp;
 	object.position.z = zTmp;
-	//object.position.y = 5;
 	this.scene.add(object);
 }
 

@@ -5,7 +5,7 @@ Ville = function (tabGeo){
 	this.scene; //Scene de la ville
 	this.camera; //Camera de la ville
 	this.plancher;
-	this.distance = 50;
+	this.distance = 40;
 	this.tabGeo = tabGeo;
 	
 	//Grosseur du terrain
@@ -30,12 +30,12 @@ Ville.prototype.initialize = function (){
 	// Initialisation de la scène et de la caméra
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(45, canvasWidth / canvasHeight, 0.1, 100);
-    this.camera.position.set(0, this.distance / 2, this.distance);
-	this.camera.lookAt(this.scene.position);
+    // this.camera.position.set(0, this.distance / 2, this.distance);
+	// this.camera.lookAt(this.scene.position);
     
 	//Initialise a 0,0
-	// this.camera.position.set(0,1,0);
-	// this.camera.rotation.y = 3.5;
+	this.camera.position.set(0,1,0);
+	this.camera.rotation.y = 3.5;
 	
 	
     //this.camera.lookAt(this.scene.position);
@@ -43,7 +43,10 @@ Ville.prototype.initialize = function (){
 	
 	// De la lumière
 	var light = new THREE.PointLight( 0xffffff, 1.0);
-	light.position.set( 0,100,0);
+	light.position.set( -100,1000,-100);
+	//this.scene.add( light );
+	
+	var light = new THREE.AmbientLight( 0xaaaaaa );
 	this.scene.add( light );
 	
 	
@@ -58,13 +61,50 @@ Ville.prototype.initialize = function (){
 	
 	//Déposer batiment sur le plancher
 	this.plancher.createVille(this.tabGeo);
-} 
+	
+	
+	var scene = this.scene;
+	
+	// load the model and create everything
+    // var loader = new THREE.JSONLoader();
+    // loader.load('/models/banlancoir3.json', function (geometry, materials) {
+        // var mesh, material;
 
+        // // create a mesh
+        // mesh = new THREE.SkinnedMesh(
+          // geometry,
+          // new THREE.MeshFaceMaterial(materials)
+        // );
+
+        // // define materials collection
+        // material = mesh.material.materials;
+
+        // // enable skinning
+        // for (var i = 0; i < materials.length; i++) {
+          // var mat = materials[i];
+          // mat.skinning = true;
+        // }
+
+        // // create animation
+        // animation = new THREE.AnimationAction(mesh.geometry.animations[0]);
+        // mixer = new THREE.AnimationMixer(mesh);
+        // mixer.addAction(animation);
+        // scene.add(mesh);
+    // });
+	
+	
+	
+} 
 Ville.prototype.animate = function (){
+	
+	for (var x = 0; x < this.plancher.anime.length; x++){
+		this.plancher.anime[x].update(0.01);
+	}
 	var timer = new Date().getTime() * 0.0002;
-    this.camera.position.x = -this.distance * Math.cos(timer);
-    this.camera.position.z = this.distance * Math.sin(timer);
-    this.camera.lookAt(this.scene.position);
+	//if (mixer) mixer.update(0.01);
+    // this.camera.position.x = -this.distance * Math.cos(timer);
+    // this.camera.position.z = this.distance * Math.sin(timer);
+    // this.camera.lookAt(this.scene.position);
     this.render();
 } 
 
