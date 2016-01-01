@@ -5,7 +5,7 @@ load();
 //Charge les JSON
 function load(){
 	
-	var nbJson = 12;
+	var nbJson = 13;
 	var nbLoad = 0;
 	var tabJson =  new Array(); 
 	
@@ -132,6 +132,16 @@ function load(){
 		
 		var material = new THREE.MeshFaceMaterial(materials);
 		tabJson[9] = new ModelJson(geometry,material);
+		if(nbLoad === nbJson){
+			main = new Main(tabJson);
+		}
+    });
+	
+	loader.load('/models/banc.json', function (geometry, materials) {
+		nbLoad ++;
+		
+		var material = new THREE.MeshFaceMaterial(materials);
+		tabJson[12] = new ModelJson(geometry,material);
 		if(nbLoad === nbJson){
 			main = new Main(tabJson);
 		}

@@ -57,9 +57,10 @@ Plancher.prototype.createVille = function (tabGeo){
 			}else{
 						
 				if(isImpaire){
-					//Ajouter un batiment (gazon)				
+					//Ajouter un batiment (gazon)	
+					this.tabCellule[z][x].occuper = true;
 					var isRotate = modX != 3;					
-					this.createBuilding(tabGeo,xTmp,zTmp,isRotate);
+					this.createBuilding(tabGeo,xTmp,zTmp,isRotate,x,z);
 				}
 		
 				//Ajouter un cellule (gazon)
@@ -70,7 +71,7 @@ Plancher.prototype.createVille = function (tabGeo){
 	}
 }
 
-Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp, isRotate){
+Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp, isRotate, x,z){
 	//Variable pour le choix de cellule
 	var type = 0; //0 = rien, 1 = commercial, 2 = residentiel, 3 = site 
 	var tabTmp = new Array();
@@ -104,9 +105,10 @@ Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp, isRotate){
 				this.createHome(tabGeo,xTmp,zTmp, isRotate);
 			break;
 		case 3: this.site--;
-				this.createSite(tabGeo,xTmp,zTmp);
+				this.createSite(tabGeo,xTmp,zTmp, isRotate);
 			break;
 		case 0:
+				this.tabCellule[z][x].occuper = false;
 				this.rien--;
 			break;
 	}
@@ -163,63 +165,79 @@ Plancher.prototype.createHome = function (tabGeo, xTmp, zTmp, isRotate){
 	
 }
 
-Plancher.prototype.createSite = function (tabGeo, xTmp, zTmp){
+Plancher.prototype.createSite = function (tabGeo, xTmp, zTmp, isRotate){
 	
-	//Rond
-	var object = new THREE.SkinnedMesh(tabGeo[11].geometrie, tabGeo[11].material);
+	var random = Math.random();
+	
+	if(random < 0.5){ //Banc
+		var object = new THREE.Mesh(tabGeo[12].geometrie,tabGeo[12].material);
+		
+		if(isRotate){
+			object.rotation.y = Math.PI;
+		}
+		
+		object.position.x = xTmp;
+		object.position.z = zTmp;
+		this.scene.add(object);
+	}else{ //Parc amusement
+		
+		//Rond
+		var object = new THREE.SkinnedMesh(tabGeo[11].geometrie, tabGeo[11].material);
 
-	var material = object.material.materials;
+		var material = object.material.materials;
 
-    for (var i = 0; i < material.length; i++) {
-		var mat = material[i];
-		mat.skinning = true;
+		for (var i = 0; i < material.length; i++) {
+			var mat = material[i];
+			mat.skinning = true;
+		}
+		
+		object.position.x = xTmp;
+		object.position.z = zTmp;
+		object.position.y = -0.2;
+		
+		this.scene.add(object);
+		
+		var animation = new THREE.AnimationAction(object.geometry.animations[0]);
+		var mixer = new THREE.AnimationMixer(object);
+		mixer.addAction(animation);
+		this.anime.push(mixer);
+		
+		//Tige
+		var object3 = new THREE.Mesh(tabGeo[8].geometrie,tabGeo[8].material);
+		object3.position.x = xTmp;
+		object3.position.z = zTmp;
+		object3.position.y = -0.2;
+		this.scene.add(object3);
+		
+		
+		
+		
+		//banlacoir	
+		var object2 = new THREE.SkinnedMesh(tabGeo[10].geometrie, tabGeo[10].material);//,tabGeo[4].material);
+		
+		var material2 = object2.material.materials;
+
+		for (var i = 0; i < material2.length; i++) {
+			var mat = material2[i];
+			mat.skinning = true;
+		}
+		
+		object2.position.x = xTmp;
+		object2.position.z = zTmp;
+		this.scene.add(object2);
+		
+		var animation2 = new THREE.AnimationAction(object2.geometry.animations[0]);
+		var mixer2 = new THREE.AnimationMixer(object2);
+		mixer2.addAction(animation2);
+		this.anime.push(mixer2);
+		
+		//Module
+		var object4 = new THREE.Mesh(tabGeo[9].geometrie,tabGeo[9].material);
+		object4.position.x = xTmp;
+		object4.position.z = zTmp;
+		this.scene.add(object4);
+	
 	}
-	
-	object.position.x = xTmp;
-	object.position.z = zTmp;
-	object.position.y = -0.2;
-	
-	this.scene.add(object);
-	
-	var animation = new THREE.AnimationAction(object.geometry.animations[0]);
-	var mixer = new THREE.AnimationMixer(object);
-	mixer.addAction(animation);
-	this.anime.push(mixer);
-	
-	//Tige
-	var object3 = new THREE.Mesh(tabGeo[8].geometrie,tabGeo[8].material);
-	object3.position.x = xTmp;
-	object3.position.z = zTmp;
-	object3.position.y = -0.2;
-	this.scene.add(object3);
-	
-	
-	
-	
-	//banlacoir	
-	var object2 = new THREE.SkinnedMesh(tabGeo[10].geometrie, tabGeo[10].material);//,tabGeo[4].material);
-	
-    var material2 = object2.material.materials;
-
-	for (var i = 0; i < material2.length; i++) {
-		var mat = material2[i];
-		mat.skinning = true;
-    }
-	
-	object2.position.x = xTmp;
-	object2.position.z = zTmp;
-	this.scene.add(object2);
-	
-	var animation2 = new THREE.AnimationAction(object2.geometry.animations[0]);
-	var mixer2 = new THREE.AnimationMixer(object2);
-	mixer2.addAction(animation2);
-	this.anime.push(mixer2);
-	
-	//Module
-	var object4 = new THREE.Mesh(tabGeo[9].geometrie,tabGeo[9].material);
-	object4.position.x = xTmp;
-	object4.position.z = zTmp;
-	this.scene.add(object4);
 	
 }
 
