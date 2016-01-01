@@ -3,20 +3,27 @@
 Main = function(tabGeo){
 	this.tabGeo = tabGeo;
 	this.createVille();
+	this.request;
 }
 
 Main.prototype.createVille = function (){
 	this.ville = new Ville(this.tabGeo);
 	this.ville.initialize();
+	
+	if(this.request){
+		cancelAnimationFrame(this.request);
+		requestId = undefined;
+	}
+	
 	this.animate();
 }
 
 Main.prototype.animate = function (){
 	this.ville.animate();
-	requestAnimationFrame(this.update);
+	this.request = requestAnimationFrame(this.update);
 }
 
 Main.prototype.update = function (){
 	main.ville.animate();
-	requestAnimationFrame(main.update);
+	main.request = requestAnimationFrame(main.update);
 }

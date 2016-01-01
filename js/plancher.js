@@ -57,12 +57,8 @@ Plancher.prototype.createVille = function (tabGeo){
 			}else{
 						
 				if(isImpaire){
-					//console.log("a");
-					//Ajouter un batiment (gazon)
-					console.log(modZ);
-					
-					var isRotate = modX != 3;
-					
+					//Ajouter un batiment (gazon)				
+					var isRotate = modX != 3;					
 					this.createBuilding(tabGeo,xTmp,zTmp,isRotate);
 				}
 		
@@ -105,7 +101,7 @@ Plancher.prototype.createBuilding = function (tabGeo, xTmp, zTmp, isRotate){
 				this.createCommercial(tabGeo,xTmp,zTmp, isRotate);
 			break;
 		case 2:	this.residentiel--;
-				this.createHome(tabGeo,xTmp,zTmp);
+				this.createHome(tabGeo,xTmp,zTmp, isRotate);
 			break;
 		case 3: this.site--;
 				this.createSite(tabGeo,xTmp,zTmp);
@@ -135,16 +131,31 @@ Plancher.prototype.createCommercial = function (tabGeo, xTmp, zTmp, isRotate){
 	
 	this.scene.add(object);
 }
-Plancher.prototype.createHome = function (tabGeo, xTmp, zTmp){
+Plancher.prototype.createHome = function (tabGeo, xTmp, zTmp, isRotate){
 	
 	var random = Math.random();
 	
 	if(random < 0.33){ //appartement	
 		var object = new THREE.SkinnedMesh(tabGeo[1].geometrie, tabGeo[1].material);
+		
+		if(isRotate){
+			object.rotation.y = Math.PI/2;
+		}else{
+			object.rotation.y = 3*Math.PI/2;
+		}
+		
 	}else if(random < 0.66){ //Moderne
 		var object = new THREE.SkinnedMesh(tabGeo[4].geometrie, tabGeo[4].material);
+		
+		if(!isRotate){
+			object.rotation.y = Math.PI;
+		}
 	}else{ //Normal
 		var object = new THREE.Mesh(tabGeo[5].geometrie,tabGeo[5].material);
+		
+		if(isRotate){
+			object.rotation.y = Math.PI;
+		}
 	}
 	object.position.x = xTmp;
 	object.position.z = zTmp;
