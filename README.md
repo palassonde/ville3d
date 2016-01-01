@@ -19,6 +19,11 @@ Generation procedural d'une ville
 * D pour decendre (axe Y)
 * U pour monter (axe Y)
 
+## Desription
+
+Nous avons créé une ville basé une un plateau de grille. Les batiments et parc sont placé aléatoirement dans des zones prédéfinies. 
+Le reste est occuppé par la route ou du gazon.
+
 ## Composition des fichier
 
 * Cellule.js : Contient les élément important d'une cellule
