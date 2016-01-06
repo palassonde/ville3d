@@ -12,7 +12,7 @@ function load(){
 	var loader = new THREE.JSONLoader();
 	
 	//Gazon
-	loader.load('/models/grass.json', function (geometry, materials) {
+	loader.load('models/grass.json', function (geometry, materials) {
 		nbLoad ++;
 		var material = new THREE.MeshFaceMaterial(materials);
 		tabJson[0] = new ModelJson(geometry,material);
@@ -23,7 +23,7 @@ function load(){
     });
 	
 	//Street
-	loader.load('/models/street_l.json', function (geometry, materials) {
+	loader.load('models/street_l.json', function (geometry, materials) {
 		nbLoad ++;
 		var material = new THREE.MeshFaceMaterial(materials);
 		tabJson[2] = new ModelJson(geometry,material);
@@ -34,7 +34,7 @@ function load(){
     });
 	
 	//Street
-	loader.load('/models/street_n.json', function (geometry, materials) {
+	loader.load('models/street_n.json', function (geometry, materials) {
 		nbLoad ++;
 		var material = new THREE.MeshFaceMaterial(materials);
 		tabJson[3] = new ModelJson(geometry,material);
@@ -46,7 +46,7 @@ function load(){
 	
 	
 	//bulding
-	loader.load('/models/appartement.json', function (geometry, materials) {
+	loader.load('models/appartement.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -56,7 +56,7 @@ function load(){
 		}
     });
 	
-	loader.load('/models/maisonCfini.json', function (geometry, materials) {
+	loader.load('models/maisonCfini.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -66,7 +66,7 @@ function load(){
 		}
     });
 	
-	loader.load('/models/maison.json', function (geometry, materials) {
+	loader.load('models/maison.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -76,7 +76,7 @@ function load(){
 		}
     });
 	
-	loader.load('/models/market.json', function (geometry, materials) {
+	loader.load('models/market.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -86,7 +86,7 @@ function load(){
 		}
     });
 	
-	loader.load('/models/entreprise.json', function (geometry, materials) {
+	loader.load('models/entreprise.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -97,7 +97,7 @@ function load(){
     });
 	
 	//module
-	loader.load('/models/rondt.json', function (geometry, materials) {
+	loader.load('models/rondt.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -107,7 +107,7 @@ function load(){
 		}
     });
 	
-	loader.load('/models/banlancoir.json', function (geometry, materials) {
+	loader.load('models/banlancoir.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -117,7 +117,7 @@ function load(){
 		}
     });
 	
-	loader.load('/models/tige.json', function (geometry, materials) {
+	loader.load('models/tige.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -127,7 +127,7 @@ function load(){
 		}
     });
 	
-	loader.load('/models/moduleB.json', function (geometry, materials) {
+	loader.load('models/moduleB.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
@@ -137,7 +137,7 @@ function load(){
 		}
     });
 	
-	loader.load('/models/banc.json', function (geometry, materials) {
+	loader.load('models/banc.json', function (geometry, materials) {
 		nbLoad ++;
 		
 		var material = new THREE.MeshFaceMaterial(materials);
